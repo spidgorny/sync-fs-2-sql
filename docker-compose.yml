@@ -16,3 +16,14 @@ services:
     restart: always
     ports:
       - 8080:8080
+
+  server:
+    build:
+      context: .
+    environment:
+      NODE_ENV: production
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/usr/src
+      - /usr/src/node_modules

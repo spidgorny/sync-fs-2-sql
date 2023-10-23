@@ -2,7 +2,7 @@
 create table file
 (
     id   serial primary key,
-    id_folder int references folder (id),
+    id_folder bigint references folder (id),
     name varchar not null,
     size integer not null,
     ctime timestamp without time zone,

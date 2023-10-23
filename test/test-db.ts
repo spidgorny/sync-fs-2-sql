@@ -1,10 +1,5 @@
-import { db } from '../server/database/database'
-
-async function runTest(code: () => void) {
-    console.log('Startup time', process.uptime());
-    await code();
-    console.log('Run time', process.uptime());
-}
+import {db} from '../server/database/database'
+import {runTest} from "@/test/bootstrap";
 
 runTest(async () => {
     const row = await db.selectFrom('file')

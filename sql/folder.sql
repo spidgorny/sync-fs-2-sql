@@ -11,3 +11,7 @@ create table folder
     updated_at timestamp without time zone
 );
 
+alter table public.folder
+    add constraint folder_unique_parent_name
+        unique (parent, name)
+    [

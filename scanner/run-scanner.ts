@@ -25,7 +25,7 @@ async function importCode(parent: Folder, dirent: Dirent) {
     let stat = fs.statSync(dirent.path);
     if (dirent.isDirectory()) {
         let set = {
-            id_parent: parent?.id ?? null,
+            parent: parent?.id ?? null,
             name: dirent.name,
             size: stat.size,
             ctime: stat.ctime,
@@ -34,12 +34,12 @@ async function importCode(parent: Folder, dirent: Dirent) {
         const res = await db.insertInto('folder')
             .values(set)
             .onConflict(oc => oc
-            .column('id')
+            .columns(['parent', 'name'])
             .doUpdateSet(set)).execute();
         return;
     }
     let set = {
-        id_parent: parent?.id ?? null,
+        id_folder: parent?.id ?? null,
         name: dirent.name,
         size: stat.size,
         ctime: stat.ctime,
@@ -47,6 +47,6 @@ async function importCode(parent: Folder, dirent: Dirent) {
     };
     const res = await db.insertInto('file').values(set)
         .onConflict(oc => oc
-            .column('id')
+            .columns(['id_folder', 'name'])
             .doUpdateSet(set)).execute();
 }

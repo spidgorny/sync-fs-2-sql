@@ -9,6 +9,9 @@ create table file
     mtime timestamp without time zone,
     created_at timestamp without time zone,
     updated_at timestamp without time zone
-
 );
 
+alter table public.file
+    add constraint file_unique_parent_name
+        unique (id_folder, name)
+    ;

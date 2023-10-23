@@ -10,6 +10,3 @@ chokidar.watch(root).on('all', (event, path) => {
     }
     console.log(event, path);
 });
-
-// interesting
-// here

@@ -13,12 +13,18 @@ runTest(async () => {
 }).then();
 
 async function scanDir(root: string, importCode: (file: Dirent) => void) {
+	console.log(process.uptime().toFixed(3), root);
 	const dir = fs.opendirSync(root);
 
 	let promiseList = [];
 	for await (let file of dir) {
-		console.log(file.name);
+		// console.log(file.name);
 		promiseList.push(importCode(file));
 	}
-	return Promise.all(promiseList);
+	let entries = await Promise.all(promiseList);
+	// console.table(entries, ["id_folder", "name"]);
+	let folders = entries.filter((x) => !!x.parent);
+	return await Promise.all(
+		folders.map((entry) => scanDir(path.join(root, entry.name), importCode)),
+	);
 }

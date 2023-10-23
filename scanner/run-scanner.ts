@@ -4,6 +4,7 @@ import { Dirent } from "fs";
 import path from "node:path";
 import { findInsertFolderInDb } from "@/scanner/parent";
 import { importCode } from "@/scanner/db-folder-file";
+import { File, Folder } from "@/server/database/types";
 
 runTest(async () => {
 	const root = path.resolve("..");
@@ -12,7 +13,10 @@ runTest(async () => {
 	await scanDir(root, (dirent: Dirent) => importCode(parent, dirent));
 }).then();
 
-async function scanDir(root: string, importCode: (file: Dirent) => void) {
+async function scanDir(
+	root: string,
+	importCode: (file: Dirent) => File | Folder,
+) {
 	console.log(process.uptime().toFixed(3), root);
 	const dir = fs.opendirSync(root);
 

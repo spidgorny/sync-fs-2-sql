@@ -1,16 +1,18 @@
-import { Folder } from "@/server/database/types";
+import { File, Folder } from "@/server/database/types";
 import fs, { Dirent } from "fs";
 import path from "node:path";
 import { db } from "@/server/database/database";
 import { getFileById, getFileByName } from "@/scanner/file";
-import { getFolderById } from "@/scanner/folder";
 import { findFolderByName } from "@/scanner/parent";
 
-export async function importCode(parent: Folder, dirent: Dirent) {
+export async function importCode(
+	parent: Folder,
+	dirent: Dirent,
+): Promise<File | Folder> {
 	if (dirent.isDirectory()) {
 		return insertUpdateDirectory(parent, dirent);
 	}
-	return insertUpdateFile(parent, dirent);
+	return await insertUpdateFile(parent, dirent);
 }
 
 export async function insertUpdateDirectory(parent: Folder, dirent: Dirent) {
@@ -78,14 +80,13 @@ async function insertUpdateFile(parent: Folder, dirent: Dirent) {
 			.where("name", "=", dirent.name)
 			.execute();
 		return getFileById(row.id);
-	} else {
-		const res = await db
-			.insertInto("file")
-			.values({
-				...set,
-				created_at: new Date(),
-			})
-			.executeTakeFirst();
-		return getFileById(Number(res.insertId));
 	}
+	const res = await db
+		.insertInto("file")
+		.values({
+			...set,
+			created_at: new Date(),
+		})
+		.executeTakeFirst();
+	return getFileById(Number(res.insertId));
 }

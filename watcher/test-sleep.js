@@ -1,3 +1,3 @@
 setInterval(() => {
-    console.log(process.uptime());
+	console.log(process.uptime());
 }, 1000);

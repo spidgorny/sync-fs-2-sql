@@ -13,7 +13,7 @@
     "start:sleep": "node watcher/test-sleep.js",
     "start:ls": "ls -l && ls -l node_modules",
     "biome:check": "npx @biomejs/biome check --apply-unsafe app",
-    "biome:format": "npx @biomejs/biome format --write server"
+    "biome:format": "npx @biomejs/biome format --write app scanner server watcher"
   },
   "dependencies": {
     "chokidar": "^3.5.3",

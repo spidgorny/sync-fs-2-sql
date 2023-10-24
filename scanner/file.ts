@@ -6,7 +6,7 @@ export function getFileById(insertId: number) {
 	return db.selectFrom("file").where("id", "=", insertId).executeTakeFirst();
 }
 
-export async function getFileByName(
+export async function findFileByName(
 	name: string,
 	parent: Folder | null = null,
 ) {

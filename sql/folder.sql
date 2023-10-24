@@ -2,7 +2,7 @@
 create table folder
 (
     id   serial primary key,
-    parent bigint references folder (id),
+    parent bigint references folder (id) ON DELETE CASCADE,
     name varchar not null,
     size integer not null,
     ctime timestamp without time zone,
@@ -14,4 +14,3 @@ create table folder
 alter table public.folder
     add constraint folder_unique_parent_name
         unique (parent, name)
-    [

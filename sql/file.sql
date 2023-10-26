@@ -1,7 +1,8 @@
--- auto-generated definition
+-- we MUST reuse the folder_id_seq to keep the ID unique
+-- for folder and files
 create table file
 (
-    id   serial primary key,
+    id   int default nextval('folder_id_seq'::regclass) primary key,
     id_folder bigint references folder (id) ON DELETE CASCADE,
     name varchar not null,
     size integer not null,

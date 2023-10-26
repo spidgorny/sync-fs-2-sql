@@ -46,3 +46,11 @@ async function insertRootDirectory(filePath: string) {
 		.execute();
 	return res;
 }
+
+export async function getVolumes() {
+	return db
+		.selectFrom("folder")
+		.selectAll()
+		.where("parent", "is", null)
+		.execute();
+}

@@ -1,9 +1,12 @@
 import { db } from "@/server/database/database";
 import { Folder } from "@/server/database/types";
 
-export function getFileById(insertId: number) {
-	console.log("getFileById", { insertId });
-	return db.selectFrom("file").where("id", "=", insertId).executeTakeFirst();
+export function getFileById(id: number) {
+	return db
+		.selectFrom("file")
+		.selectAll()
+		.where("id", "=", id)
+		.executeTakeFirst();
 }
 
 export async function findFileByName(

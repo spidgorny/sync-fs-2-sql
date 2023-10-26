@@ -1,16 +1,15 @@
 import { File, Folder } from "@/server/database/types";
-import { useState } from "react";
+import { useFolderState } from "./finder-view";
 import { ColumnEntryView } from "@/app/column-entry-view";
 
 export type ColumnEntry = Partial<Folder | File>;
 
-export function ReactColumns(props: { data: ColumnEntry[] }) {
-	const [selectedIdList, setSelectedIdList] = useState<number[]>([]);
-	const setSelectedFolder = (level: number, id: number) => {
-		const newList = [...selectedIdList];
-		newList[level] = id;
-		setSelectedIdList(newList);
-	};
+export function ReactColumns(props: {
+	data: ColumnEntry[];
+	folderState: ReturnType<useFolderState>;
+}) {
+	let { selectedIdList, setSelectedFolder } = props.folderState;
+
 	let lastCol = props.data;
 	const columns = [
 		props.data,
@@ -22,6 +21,8 @@ export function ReactColumns(props: { data: ColumnEntry[] }) {
 			})
 			.filter(Boolean),
 	];
+	console.log({ columns });
+
 	return (
 		<div className="flex flex-row h-full rounded m-1 p-1">
 			{columns.map((column, index) => (

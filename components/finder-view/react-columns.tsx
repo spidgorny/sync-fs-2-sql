@@ -1,12 +1,14 @@
 import { File, Folder } from "@/server/database/types";
-import { useFolderState } from "./finder-view";
-import { ColumnEntryView } from "@/app/column-entry-view";
+import { useFolderState } from "@/components/finder-view/finder-view";
+import { ColumnEntryView } from "@/components/finder-view/column-entry-view";
 
-export type ColumnEntry = Partial<Folder | File>;
+export type ColumnEntry = Partial<Folder | File> & {
+	children: Partial<Folder | File>[];
+};
 
 export function ReactColumns(props: {
 	data: ColumnEntry[];
-	folderState: ReturnType<useFolderState>;
+	folderState: ReturnType<typeof useFolderState>;
 }) {
 	let { selectedIdList, setSelectedFolder } = props.folderState;
 
@@ -17,7 +19,7 @@ export function ReactColumns(props: {
 			.map((id) => {
 				let newLastCol = lastCol?.find((x) => x.id === id);
 				lastCol = newLastCol?.children; // next loop
-				return newLastCol?.children ?? null;
+				return (newLastCol?.children as ColumnEntry[]) ?? null;
 			})
 			.filter(Boolean),
 	];
@@ -45,7 +47,7 @@ function Column(props: {
 	setSelectedFolder: (level: number, id: number) => void;
 }) {
 	return (
-		<div className="d-flex flex-col border border-gray-500 w-[10em]">
+		<div className="h-1/2 d-flex flex-col border border-gray-500 w-[20em] overflow-auto">
 			{props.data.map((entry) => (
 				<ColumnEntryView
 					level={props.level}

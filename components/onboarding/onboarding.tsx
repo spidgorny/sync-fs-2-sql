@@ -1,7 +1,7 @@
 import { db, pgPool } from "@/server/database/database";
 import { PropsWithChildren, Suspense } from "react";
 import { Spinner } from "@nextui-org/spinner";
-import { ErrorAlert } from "@/app/error-alert";
+import { ErrorAlert } from "@/components/widgets/error-alert";
 import invariant from "tiny-invariant";
 import { TriggerCreateTables } from "@/components/onboarding/trigger-create-tables";
 import fs from "fs";
@@ -10,7 +10,7 @@ export async function Onboarding(props: PropsWithChildren<{}>) {
 	try {
 		await checkTablesExist();
 		await checkFoldersImported();
-		return <div>{props.children}</div>;
+		return <div className="h-full">{props.children}</div>;
 	} catch (e) {
 		return (
 			<div className="flex justify-center items-center h-screen">

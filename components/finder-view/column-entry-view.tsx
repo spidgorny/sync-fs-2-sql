@@ -1,6 +1,6 @@
 import clsx from "clsx";
 
-import { ColumnEntry } from "@/app/react-columns";
+import { ColumnEntry } from "@/components/finder-view/react-columns";
 
 export function ColumnEntryView(props: {
 	level: number;
@@ -14,7 +14,7 @@ export function ColumnEntryView(props: {
 		<div
 			className={clsx(
 				"text-sm flex flex-row justify-between",
-				"cursor-pointer",
+				"cursor-pointer overflow-hidden whitespace-nowrap",
 				{
 					"text-white bg-blue-500": isSelected,
 				},

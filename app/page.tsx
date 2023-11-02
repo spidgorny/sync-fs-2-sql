@@ -1,6 +1,4 @@
-import "finderjs/example/finderjs.css";
-import { ReactFinder } from "./react-finder";
-import FinderView from "@/app/finder-view";
+import FinderView from "@/components/finder-view/finder-view";
 import { Onboarding } from "@/components/onboarding/onboarding";
 
 export default function Home() {

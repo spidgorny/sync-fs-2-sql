@@ -1,5 +1,6 @@
 import { Database } from "./types"; // this is the Database interface we defined earlier
 import * as pg from "pg";
+// @ts-ignore
 const { Pool } = pg.default;
 import { Kysely, PostgresDialect } from "kysely";
 

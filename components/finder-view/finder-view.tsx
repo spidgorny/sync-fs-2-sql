@@ -1,14 +1,15 @@
 "use client";
 
-import { ReactColumns } from "@/app/react-columns";
+import { ReactColumns } from "@/components/finder-view/react-columns";
 import { useEffect, useState } from "react";
 
 export function useFolderState() {
 	const [data, setData] = useState([]);
 	const [selectedIdList, setSelectedIdList] = useState<number[]>([]);
-	console.log({ selectedIdList });
+	// console.log({ selectedIdList });
+
 	const setSelectedFolder = (level: number, id: number) => {
-		const newList = [...selectedIdList];
+		let newList = [...selectedIdList].slice(0, level);
 		newList[level] = id;
 		setSelectedIdList(newList);
 		loadChildren(newList).then();
@@ -26,22 +27,28 @@ export function useFolderState() {
 
 	const getTreeChildByIdPath = (idPath: number[]) => {
 		let current = data;
+		console.log("getTreeChildByIdPath", JSON.stringify(idPath));
 		for (let id of idPath) {
+			let newCurrent = current?.children ?? current; // needed
+			if (!newCurrent) {
+				return current;
+			}
+			current = newCurrent;
 			current = current.find((x) => x.id === id);
 			console.log("current", "[", id, "]", "=>", current);
 		}
-		return current;
+		return current as any;
 	};
 
 	const loadChildren = async (idPath: number[]) => {
 		const res = await fetch("/api/info/" + idPath.join("/"));
-		const { data, children } = await res.json();
+		const { data: infoAboutId, children } = await res.json();
 		const pointer = getTreeChildByIdPath(idPath);
 		pointer.children = children;
 		setData([...data]);
 	};
 
-	console.dir(data, { depth: null });
+	// console.dir(data, { depth: null });
 	return { data, setData, selectedIdList, setSelectedFolder, loadChildren };
 }
 
@@ -50,7 +57,7 @@ export default function FinderView() {
 
 	return (
 		<main className="h-full">
-			<ReactColumns data={data} folderState={folderState} />
+			<ReactColumns data={data} folderState={{ data, ...folderState }} />
 			<pre className="pre-wrap">{JSON.stringify(data, null, 2)}</pre>
 		</main>
 	);
